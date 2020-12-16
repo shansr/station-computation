@@ -20,17 +20,16 @@ public class StationFlowComputeApplication {
         ParameterTool tool = ParameterTool.fromArgs(args);
         String topic = tool.get("topic");
         String brokers = tool.get("brokers");
-        String groupId = tool.get("groupId");
-        String stationDbUrl = tool.get("stationDbUrl");
-        String stationDbUser = tool.get("stationDbUser");
-        String stationDbPwd = tool.get("stationDbPwd");
-        String flowDbUrl = tool.get("flowDbUrl");
-        String flowDbUser = tool.get("flowDbUser");
-        String flowDbPwd = tool.get("flowDbPwd");
+        String groupId = tool.get("group-id");
+        String stationDbUrl = tool.get("station-db-url");
+        String stationDbUser = tool.get("station-db-user");
+        String stationDbPwd = tool.get("station-db-pwd");
+        String flowDbUrl = tool.get("flow-db-url");
+        String flowDbUser = tool.get("flow-db-user");
+        String flowDbPwd = tool.get("flow-db-pwd");
         Properties properties = new Properties();
         properties.put("bootstrap.servers", brokers);
         properties.put("group.id", groupId);
-
         env.addSource(new FlinkKafkaConsumer<>(topic, new VehicleSchema(), properties))
                 .keyBy((KeySelector<Vehicle, String>) Vehicle::getVin)
                 .process(new StationDistanceComputeFunction(stationDbUrl, stationDbUser, stationDbPwd))
